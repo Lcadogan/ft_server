@@ -6,24 +6,34 @@
 #    By: lcadogan <lcadogan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/19 12:45:05 by lcadogan          #+#    #+#              #
-#    Updated: 2021/02/19 17:56:57 by lcadogan         ###   ########.fr        #
+#    Updated: 2021/02/20 18:48:41 by lcadogan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM debian:buster
+FROM 	debian:buster
 
-# Update Software Packages
-RUN apt-get update
-RUN apt-get upgrade -y
+RUN 	apt-get update && apt-get upgrade -y && \
+		apt-get -y install wget && apt-get -y install vim &&\
+		apt-get -y install nginx && \
+		apt-get -y install mariadb-server && \
+		apt-get -y install php7.3 php-mysql php-fpm php-cli php-mbstring
 
-# Install tools
-RUN apt-get -y install wget
-
-# Install Nginx Web server
-RUN apt-get -y install nginx
-
-# Install MYSQL
-RUN apt-get -y install mariadb-server
-
-# INSTALL PHP
-RUN apt-get -y install php7.3 php-mysql php-fpm php-cli php-mbstring
+RUN		wget https://wordpress.org/latest.tar.gz 
+RUN		wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-languages.tar.gz
+RUN		tar -xvf latest.tar.gz
+RUN		mv wordpress /var/www/html/
+RUN		tar -xvf  phpMyAdmin-5.0.4-all-languages.tar.gz
+RUN		rm latest.tar.gz
+RUN		rm phpMyAdmin-5.0.4-all-languages.tar.gz
+RUN		mv phpMyAdmin-5.0.4-all-languages phpmyadmin
+RUN		mv phpmyadmin /var/www/html/
+COPY	/srcs/default etc/nginx/sites-available/default
+COPY	/srcs/server_configuration.sh .
+RUN		rm /var/www/html/wordpress/wp-config-sample.php
+COPY	/srcs/wp-config.php /var/www/html/wordpress
+EXPOSE	80 443
+RUN		openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout lcadogan.key \
+		-out lcadogan.crt -subj "/C=RU/ST=Tatarstan/L=Kazan/O=school21/CN=lcadogan"
+RUN		mv lcadogan.key /etc/ssl/
+RUN		mv lcadogan.crt /etc/ssl/
+CMD		bash server_configuration.sh
