@@ -6,7 +6,7 @@
 #    By: lcadogan <lcadogan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/19 12:45:05 by lcadogan          #+#    #+#              #
-#    Updated: 2021/02/20 18:48:41 by lcadogan         ###   ########.fr        #
+#    Updated: 2021/02/21 14:18:16 by lcadogan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ RUN 	apt-get update && apt-get upgrade -y && \
 		apt-get -y install wget && apt-get -y install vim &&\
 		apt-get -y install nginx && \
 		apt-get -y install mariadb-server && \
-		apt-get -y install php7.3 php-mysql php-fpm php-cli php-mbstring
+		apt-get -y install php7.3 php-mysql php-fpm 
 
 RUN		wget https://wordpress.org/latest.tar.gz 
 RUN		wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-languages.tar.gz

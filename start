@@ -1,0 +1,3 @@
+#!/bin/bash
+docker build -t ser .
+docker run -it --rm --name Lcadogan -p 80:80 -p 443:443 ser
